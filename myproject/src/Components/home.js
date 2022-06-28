@@ -43,50 +43,55 @@ function Home() {
           </div>
         </div>
       </nav>
-      <div className="search_input">
-        <input
-          type="text"
-          className="search_input-field"
-          placeholder=" Find a user"
-          value={value}
-          onChange={onChange}
-        />
-        <button className="search_input-button" onClick={() => onSearch(value)}>
-          Search
-        </button>
-      </div>
-      <div className="dropdown">
-        {value.length > 0 && <span>Suggestions</span>}
-        {userData
-          .filter((item) => {
-            const searchText = value.toLowerCase();
-            const userName = item.login.toLowerCase();
-            return (
-              searchText &&
-              userName.startsWith(searchText) &&
-              userName !== searchText
-            );
-          })
-          .slice(0, 10)
-          .map((item) => (
-            <div
-              className="dropdown-container"
-              onClick={() => onSearch(item.login)}
-              key={item.login}
-            >
-              <img
-                className="dropdown-image"
-                src={item.avatar_url}
-                alt="login"
-              />
+
+      <div className="search-container">
+        <div className="search-inner">
+          <input
+            type="text"
+            placeholder="Find a user"
+            value={value}
+            onChange={onChange}
+            className="search_input--field"
+          />
+          <button
+            className="search_input--button"
+            onClick={() => onSearch(value)}
+          >
+            Search
+          </button>
+        </div>
+        <div className="dropdown">
+          {userData
+            .filter((item) => {
+              const searchText = value.toLowerCase();
+              const userName = item.login.toLowerCase();
+              return (
+                searchText &&
+                userName.startsWith(searchText) &&
+                userName !== searchText
+              );
+            })
+            .slice(0, 10)
+            .map((item) => (
               <div
-                className="dropdown-users"
-                onClick={() => openInNewTab(item.html_url)}
+                className="dropdown-container"
+                onClick={() => onSearch(item.login)}
+                key={item.login}
               >
-                {item.login}
+                <img
+                  className="dropdown-image"
+                  src={item.avatar_url}
+                  alt="login"
+                />
+                <div
+                  className="dropdown-users"
+                  onClick={() => openInNewTab(item.html_url)}
+                >
+                  {item.login}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+        </div>
       </div>
     </div>
   );
