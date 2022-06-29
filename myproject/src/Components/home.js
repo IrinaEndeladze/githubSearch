@@ -1,6 +1,6 @@
 import "./home.css";
 import React, { useEffect, useState, useRef } from "react";
-import { AiFillGithub } from "react-icons/ai";
+import { AiFillGithub, AiOutlineSearch } from "react-icons/ai";
 
 function Home() {
   const [value, setValue] = useState("");
@@ -31,7 +31,9 @@ function Home() {
       const searchText = value.toLowerCase();
       const userName = item.login.toLowerCase();
       return (
-        searchText && userName.startsWith(searchText) && userName !== searchText
+        searchText &&
+        userName.startsWith(searchText) &&
+        userName !== searchText - 1
       );
     });
     setFilteredData(filtered);
@@ -41,6 +43,7 @@ function Home() {
 
   const onChange = (e) => {
     setValue(e.target.value);
+    setShow(true);
   };
 
   useEffect(() => {
@@ -70,12 +73,10 @@ function Home() {
     <div className="home-conatiner">
       <nav>
         <div className="container_header">
+          <span className="icon">
+            <AiFillGithub />
+          </span>
           <span className="container_header-title">Github's user search</span>
-          <div className="icon">
-            <span>
-              <AiFillGithub />
-            </span>
-          </div>
         </div>
       </nav>
       <div ref={wrapperRef} className="search-container">
@@ -92,7 +93,7 @@ function Home() {
             className="search_input--button"
             onClick={() => onSearch(value)}
           >
-            Search
+            <AiOutlineSearch />
           </button>
         </div>
         {show && (

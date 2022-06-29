@@ -8,32 +8,24 @@ nav {
   height: 60px;
   background-color: rgb(12, 46, 59);
 }
-
 .container_header {
-  width: 80%;
-  margin: auto;
+  width: 60%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   line-height: 60px;
+  margin-left: 50px;
 }
 .container_header-title {
-  font-size: 30px;
   font-weight: bold;
   color: white;
   font-family: "Lucida Sans";
-  cursor: pointer;
+  margin-left: 50px;
 }
 .icon {
-  margin-top: 5px;
-}
-.icon span:nth-child(1) {
-  font-size: 35px;
+  font-size: 55px;
   color: white;
 }
 
 .search-container {
-  /* width: 80%; */
   display: flex;
   flex-direction: column;
 }
@@ -52,15 +44,15 @@ nav {
   outline: none;
 }
 .search_input--button {
-  min-width: 8%;
-  background-color: rgb(105, 199, 236);
+  min-width: 5%;
+  background-color: rgb(12, 46, 59);
   border-color: rgb(12, 46, 59);
   border-left: none;
   border-top-right-radius: 5px;
+  color: white;
 }
 
 .dropdown {
-  /* width: 48.5%; */
   flex-direction: column;
   border: 2px solid rgb(12, 46, 59);
   align-self: center;
@@ -71,34 +63,37 @@ nav {
   max-height: 350px;
   height: fit-content;
 }
-@media only screen and (max-width: 360px) {
+@media only screen and (min-width: 360px) {
   .dropdown {
-    width: 53%;
+    width: 45.7%;
+  }
+  .container_header-title {
+    font-size: 16px;
+    margin-left: 20px;
   }
 }
 @media only screen and (min-width: 375px) {
   .dropdown {
-    width: 52.5%;
+    width: 46%;
   }
-}
-@media only screen and (min-width: 390px) {
-  .dropdown {
-    width: 52%;
+  .container_header-title {
+    font-size: 16px;
+    margin-left: 20px;
   }
 }
 @media only screen and (min-width: 412px) {
   .dropdown {
-    width: 51.5%;
+    width: 45.5%;
   }
 }
-@media only screen and (min-width: 540px) {
-  .dropdown {
-    width: 48.7%;
-  }
-}
+
 @media only screen and (min-width: 768px) {
   .dropdown {
-    width: 48.2%;
+    width: 45.2%;
+  }
+  .container_header-title {
+    font-size: 25px;
+    margin-left: 20px;
   }
 }
 
