@@ -1,16 +1,16 @@
 import "./home.css";
-import { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { AiFillGithub } from "react-icons/ai";
 
 function Home() {
   const [value, setValue] = useState("");
   const [userData, setUserData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [show, setShow] = useState(false);
+  const wrapperRef = useRef(null);
+
   const openInNewTab = (url) => {
     window.open(url, "_blank", "noopener,noreferrer");
-  };
-
-  const onChange = (e) => {
-    setValue(e.target.value);
   };
 
   useEffect(() => {
@@ -23,14 +23,49 @@ function Home() {
         .catch((error) => console.error(error));
     };
     fetchData();
-  }, [value]);
+  }, []);
 
   const onSearch = (searchText) => {
-    console.log("search", searchText);
     setValue(searchText);
+    const filtered = userData.filter((item) => {
+      const searchText = value.toLowerCase();
+      const userName = item.login.toLowerCase();
+      return (
+        searchText && userName.startsWith(searchText) && userName !== searchText
+      );
+    });
+    setFilteredData(filtered);
   };
 
-  console.log(userData, "jhh");
+  const showData = value.length === 0 ? userData : filteredData;
+
+  const onChange = (e) => {
+    setValue(e.target.value);
+  };
+
+  useEffect(() => {
+    onSearch(value);
+  }, [value]);
+
+  const openGithubPage = (searchText, url) => {
+    setValue(searchText);
+    openInNewTab(url);
+  };
+
+  useEffect(() => {
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      window.removeEventListener("mousedown", handleClickOutside);
+    };
+  });
+
+  const handleClickOutside = (e) => {
+    const { current: wrap } = wrapperRef;
+    if (wrap && !wrap.contains(e.target)) {
+      setShow(false);
+    }
+  };
+
   return (
     <div className="home-conatiner">
       <nav>
@@ -43,14 +78,14 @@ function Home() {
           </div>
         </div>
       </nav>
-
-      <div className="search-container">
+      <div ref={wrapperRef} className="search-container">
         <div className="search-inner">
           <input
             type="text"
             placeholder="Find a user"
             value={value}
             onChange={onChange}
+            onClick={() => setShow(!show)}
             className="search_input--field"
           />
           <button
@@ -60,38 +95,25 @@ function Home() {
             Search
           </button>
         </div>
-        <div className="dropdown">
-          {userData
-            .filter((item) => {
-              const searchText = value.toLowerCase();
-              const userName = item.login.toLowerCase();
-              return (
-                searchText &&
-                userName.startsWith(searchText) &&
-                userName !== searchText
-              );
-            })
-            .slice(0, 10)
-            .map((item) => (
+        {show && (
+          <div className="dropdown">
+            {showData.map((item) => (
               <div
-                className="dropdown-container"
-                onClick={() => onSearch(item.login)}
+                className="dropdown-content"
+                onClick={() => openGithubPage(item.login, item.html_url)}
                 key={item.login}
+                tabIndex="0"
               >
                 <img
                   className="dropdown-image"
                   src={item.avatar_url}
                   alt="login"
                 />
-                <div
-                  className="dropdown-users"
-                  onClick={() => openInNewTab(item.html_url)}
-                >
-                  {item.login}
-                </div>
+                <div className="dropdown-users">{item.login}</div>
               </div>
             ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
