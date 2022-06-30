@@ -1,6 +1,6 @@
 import "./home.css";
 import React, { useEffect, useState, useRef } from "react";
-import { AiFillGithub, AiOutlineSearch } from "react-icons/ai";
+import { AiFillGithub, AiOutlineSearch, AiOutlineClose } from "react-icons/ai";
 
 function Home() {
   const [value, setValue] = useState("");
@@ -81,40 +81,41 @@ function Home() {
       </nav>
       <div ref={wrapperRef} className="search-container">
         <div className="search-inner">
-          <input
-            type="text"
-            placeholder="Find a user"
-            value={value}
-            onChange={onChange}
-            onClick={() => setShow(!show)}
-            className="search_input--field"
-          />
-          <button
-            className="search_input--button"
-            onClick={() => onSearch(value)}
-          >
+          <div className="search-wrapper">
+            {" "}
             <AiOutlineSearch />
-          </button>
-        </div>
-        {show && (
-          <div className="dropdown">
-            {showData.map((item) => (
-              <div
-                className="dropdown-content"
-                onClick={() => openGithubPage(item.login, item.html_url)}
-                key={item.login}
-                tabIndex="0"
-              >
-                <img
-                  className="dropdown-image"
-                  src={item.avatar_url}
-                  alt="login"
-                />
-                <div className="dropdown-users">{item.login}</div>
-              </div>
-            ))}
+            <input
+              type="text"
+              placeholder="Find a user"
+              value={value}
+              onChange={onChange}
+              onClick={() => setShow(!show)}
+            />
+            <AiOutlineClose onClick={() => setValue("")} />
           </div>
-        )}
+          {show && (
+            <>
+              <span className="search-suggestion">Suggestion</span>
+              <div className="dropdown">
+                {showData.map((item) => (
+                  <div
+                    className="dropdown-content"
+                    onClick={() => openGithubPage(item.login, item.html_url)}
+                    key={item.login}
+                    tabIndex="0"
+                  >
+                    <img
+                      className="dropdown-image"
+                      src={item.avatar_url}
+                      alt="login"
+                    />
+                    <div className="dropdown-users">{item.login}</div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
